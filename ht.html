@@ -1,0 +1,2376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VastraSahayak | Personalized Fashion Assistant</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #d97706;
+            --secondary: #0f766e;
+            --accent: #9d174d;
+            --light: #f5f5f4;
+            --dark: #1c1917;
+            --warm: #f59e0b;
+            --cool: #3b82f6;
+            --autumn: #92400e;
+            --spring: #047857;
+            --summer: #1e40af;
+            --winter: #7e22ce;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #fdf6e3 0%, #f8fafc 100%);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 15px 0;
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: -0.5px;
+        }
+        
+        .logo span {
+            color: var(--secondary);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+        
+        nav a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            font-size: 16px;
+            transition: color 0.3s;
+            position: relative;
+        }
+        
+        nav a:hover {
+            color: var(--primary);
+        }
+        
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s;
+        }
+        
+        nav a:hover::after {
+            width: 100%;
+        }
+        
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            font-size: 16px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 80px 0 60px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23fef3c7" opacity="0.3"/><path d="M0,50 Q25,25 50,50 T100,50" fill="none" stroke="%23d97706" stroke-width="1" opacity="0.2"/></svg>');
+            background-size: cover;
+        }
+        
+        .hero-content {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+        }
+        
+        .hero-text {
+            flex: 1;
+        }
+        
+        .hero-image {
+            flex: 1;
+            position: relative;
+        }
+        
+        .hero-image img {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .hero h2 {
+            font-size: 52px;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            font-family: 'Playfair Display', serif;
+            color: var(--dark);
+        }
+        
+        .hero h2 span {
+            color: var(--primary);
+            position: relative;
+        }
+        
+        .hero h2 span::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background: rgba(217, 119, 6, 0.3);
+            z-index: -1;
+        }
+        
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            color: #444;
+            max-width: 600px;
+        }
+        
+        .hero-stats {
+            display: flex;
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 42px;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1;
+        }
+        
+        .stat-text {
+            font-size: 16px;
+            color: #555;
+        }
+        
+        /* Features Section */
+        .features {
+            padding: 100px 0;
+            background: white;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-title h2 {
+            font-size: 42px;
+            font-family: 'Playfair Display', serif;
+            color: var(--dark);
+            position: relative;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+        
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+        
+        .section-title p {
+            font-size: 18px;
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .feature-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-top: 4px solid var(--primary);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+        }
+        
+        .feature-icon {
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: var(--primary);
+            background: rgba(217, 119, 6, 0.05);
+        }
+        
+        .feature-content {
+            padding: 25px;
+        }
+        
+        .feature-content h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+        
+        .feature-content p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        /* Color Analysis Section */
+        .color-analysis {
+            padding: 100px 0;
+            background: linear-gradient(135deg, #fffbeb 0%, #ecfdf5 100%);
+        }
+        
+        .color-content {
+            display: flex;
+            gap: 50px;
+            align-items: center;
+        }
+        
+        .color-text {
+            flex: 1;
+        }
+        
+        .color-visual {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        
+        .color-palette {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .color-box {
+            height: 80px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        
+        .season-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+        
+        .season-card h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .season-card.spring h3 {
+            color: var(--spring);
+        }
+        
+        .season-card.summer h3 {
+            color: var(--summer);
+        }
+        
+        .season-card.autumn h3 {
+            color: var(--autumn);
+        }
+        
+        .season-card.winter h3 {
+            color: var(--winter);
+        }
+
+        #colorAnalysisResult {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--dark);
+            padding: 15px;
+            border-radius: 10px;
+            background-color: #fef3c7;
+            border: 1px solid var(--primary);
+            display: none; /* Hidden by default */
+        }
+        
+        /* Recommendation Section */
+        .recommendations {
+            padding: 100px 0;
+            background: linear-gradient(135deg, #f0fdfa 0%, #fdf2f8 100%); /* Use a background that matches the profile section */
+        }
+        
+        .recommendation-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 60px; /* Space between forms and recs */
+        }
+        
+        .rec-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s;
+        }
+        
+        .rec-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+        }
+        
+        .rec-image {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .rec-content {
+            padding: 25px;
+            border-top: 4px solid var(--primary);
+        }
+        
+        .rec-content h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        
+        .color-match {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        
+        .match-bar {
+            flex: 1;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .match-fill {
+            height: 100%;
+            background: var(--primary);
+            border-radius: 4px;
+        }
+        
+        .rec-tags {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .tag {
+            background: #f3f4f6;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .rec-actions {
+            margin-top: 20px;
+            display: flex;
+            justify-content: flex-end;
+        }
+        
+        /* User Profile Section & Body Analysis (now integrated into Recommendations) */
+        .profile-form, .body-analysis-form {
+            max-width: 700px;
+            margin: 0 auto 40px auto; /* Add margin-bottom for spacing */
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 15px;
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 12px 15px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+            color: var(--dark);
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.2);
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-actions {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        #recommendationDashboard .section-title {
+            margin-bottom: 40px;
+        }
+
+        #bodyAnalysisResult {
+            grid-column: 1 / -1;
+            text-align: left; /* Changed to left for better readability of lists */
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--dark);
+            padding: 15px;
+            border-radius: 10px;
+            background-color: #fef3c7;
+            border: 1px solid var(--primary);
+            display: none; /* Hidden by default */
+        }
+        #bodyAnalysisResult p, #bodyAnalysisResult ul {
+            margin-bottom: 10px;
+        }
+        #bodyAnalysisResult ul {
+            list-style-type: disc;
+            margin-left: 20px;
+            font-weight: normal;
+            color: #333;
+        }
+        #bodyAnalysisResult ul li {
+            margin-bottom: 5px;
+        }
+
+
+        #imagePreview {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-top: 15px;
+            border: 1px solid #e5e7eb;
+            display: none; /* Hidden by default */
+        }
+
+
+        /* Store Locator Section */
+        .store-locator {
+            padding: 100px 0;
+            background: white;
+        }
+
+        .map-container {
+            width: 100%;
+            height: 500px;
+            background: #e0e0e0;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-size: 20px;
+            text-align: center;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .map-container p {
+            max-width: 600px;
+        }
+
+        .store-search-form {
+            max-width: 700px;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .store-search-form input[type="text"] {
+            flex-grow: 1;
+            padding: 12px 15px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+            color: var(--dark);
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .store-search-form input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.2);
+        }
+
+        .store-results {
+            max-width: 700px;
+            margin: 40px auto;
+            display: grid;
+            gap: 20px;
+        }
+
+        .store-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border-left: 5px solid var(--secondary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .store-card h3 {
+            font-size: 20px;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+
+        .store-card p {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .store-card .btn {
+            padding: 8px 15px;
+            font-size: 14px;
+        }
+
+        .map-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ensures the image covers the container */
+            border-radius: 15px;
+        }
+
+
+        /* Testimonials */
+        .testimonials {
+            padding: 100px 0;
+            background: white;
+        }
+        
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .testimonial-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            position: relative;
+        }
+        
+        .testimonial-card::before {
+            content: '"';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 80px;
+            color: rgba(217, 119, 6, 0.1);
+            font-family: serif;
+            line-height: 1;
+        }
+        
+        .testimonial-text {
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        
+        .author-info h4 {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+        
+        .author-info p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 70px 0 30px;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+        
+        .footer-col h3 {
+            font-size: 22px;
+            margin-bottom: 25px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-col h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--primary);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 15px;
+        }
+        
+        .footer-links a {
+            color: #d1d5db;
+            text-decoration: none;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #374151;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .social-icon:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid #374151;
+            color: #9ca3af;
+            font-size: 14px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .hero-content {
+                flex-direction: column;
+            }
+            
+            .color-content {
+                flex-direction: column;
+            }
+            
+            .profile-form, .body-analysis-form {
+                grid-template-columns: 1fr;
+                flex-direction: column;
+            }
+            
+            .steps {
+                flex-wrap: wrap;
+                gap: 30px;
+            }
+            
+            .steps::before {
+                display: none;
+            }
+            
+            .step {
+                width: 100%;
+                max-width: 350px;
+                margin: 0 auto;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            nav ul {
+                display: none;
+            }
+            
+            .hero h2 {
+                font-size: 42px;
+            }
+            
+            .hero-stats {
+                flex-wrap: wrap;
+            }
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 200; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.6); /* Black w/ opacity */
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .close-button {
+            color: #aaa;
+            position: absolute;
+            top: 15px;
+            right: 25px;
+            font-size: 32px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: var(--dark);
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-content h2 {
+            text-align: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            margin-bottom: 30px;
+            color: var(--primary);
+        }
+
+        .modal-content .form-group {
+            margin-bottom: 20px;
+        }
+
+        .modal-content .form-group input {
+            width: 100%;
+            box-sizing: border-box; /* Ensure padding doesn't add to width */
+        }
+
+        .modal-content .btn {
+            width: 100%;
+            padding: 12px 20px;
+            font-size: 18px;
+            margin-top: 10px;
+        }
+
+        .modal-message {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .modal-message a {
+            color: var(--primary);
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .header-user-info {
+            font-weight: 600;
+            color: var(--dark);
+            margin-right: 15px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Styling Tips Modal specific styles */
+        #stylingTipsModal .modal-content {
+            max-width: 600px;
+        }
+        #stylingTipsContent {
+            white-space: pre-wrap; /* Preserves whitespace and line breaks */
+            font-size: 16px;
+            color: #333;
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 10px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+        #stylingTipsContent.loading {
+            text-align: center;
+            font-style: italic;
+            color: #888;
+        }
+
+        /* Color Quiz Modal Specific Styles */
+        #colorQuizModal .modal-content {
+            max-width: 600px;
+            padding: 30px;
+        }
+
+        .quiz-step {
+            display: none; /* Hidden by default */
+            text-align: center;
+        }
+
+        .quiz-step.active {
+            display: block;
+        }
+
+        .quiz-step h3 {
+            font-size: 24px;
+            margin-bottom: 25px;
+            color: var(--secondary);
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .quiz-option {
+            background-color: #f0fdfa;
+            border: 2px solid var(--secondary);
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            font-size: 16px;
+            color: var(--dark);
+            font-weight: 500;
+        }
+
+        .quiz-option:hover {
+            background-color: var(--secondary);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .quiz-option.selected {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            transform: scale(1.02);
+        }
+
+        .quiz-navigation {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .quiz-navigation .btn {
+            flex: 1;
+            padding: 12px 20px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <i class="fas fa-vest-patches" style="font-size: 32px; color: var(--primary);"></i>
+                <h1>Vastra<span>Sahayak</span></h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#color-analysis">Color Analysis</a></li>
+                    <li><a href="#recommendationDashboard">Recommendations</a></li>
+                    <li><a href="#store-locator">Stores</a></li>
+                </ul>
+            </nav>
+            <div class="auth-buttons" id="authButtonsContainer">
+                <!-- Auth buttons/user info will be dynamically loaded here -->
+                <button class="btn btn-secondary" id="loginBtn">Log In</button>
+                <button class="btn btn-primary" id="signupBtn">Sign Up</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container hero-content">
+            <div class="hero-text">
+                <h2>Discover Your Perfect <span>Indian</span> Style with Personalized Fashion</h2>
+                <p>VastraSahayak uses AI-powered recommendations to help you find clothing that complements your body type, skin tone, and local weather conditions. Get personalized outfit suggestions tailored for Indian fashion sensibilities.</p>
+                <a href="#recommendationDashboard" class="btn btn-primary" style="padding: 15px 35px; font-size: 18px;">
+                    <i class="fas fa-magic"></i> Find My Style
+                </a>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <div class="stat-number">95%</div>
+                        <div class="stat-text">Satisfied Users</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">25K+</div>
+                        <div class="stat-text">Local Stores</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">4.8</div>
+                        <div class="stat-text">App Rating</div>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='500' viewBox='0 0 600 500'><rect width='600' height='500' rx='20' fill='%23fef3c7'/><circle cx='300' cy='200' r='80' fill='%23fcd34d'/><rect x='200' y='280' width='200' height='180' rx='10' fill='%23d97706'/><circle cx='250' cy='150' r='15' fill='%230f766e'/><circle cx='350' cy='150' r='15' fill='%230f766e'/></svg>" alt="Fashion Recommendation">
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Smart Features</h2>
+                <p>VastraSahayak combines fashion expertise with technology to deliver personalized recommendations</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-user" style="color: var(--secondary);"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Body Type Analysis</h3>
+                        <p>Get recommendations that flatter your specific body shape (apple, pear, hourglass) with Indian fashion sensibilities.</p>
+                        <button class="btn btn-secondary" id="featureBodyAnalysisBtn">Learn More</button>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-swatchbook" style="color: var(--accent);"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Color Analysis</h3>
+                        <p>Discover your perfect color palette using Korean-inspired seasonal analysis tailored for Indian skin tones.</p>
+                        <button class="btn btn-secondary" id="featureColorAnalysisBtn">Take Quiz</button>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-cloud-sun" style="color: var(--primary);"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Weather-Adaptive</h3>
+                        <p>Recommendations adjust based on your local weather - from Delhi heat to Mumbai monsoons.</p>
+                        <button class="btn btn-secondary" id="featureWeatherDemoBtn">See Demo</button>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-store" style="color: var(--winter);"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Local Store Finder</h3>
+                        <p>Find nearby stores carrying your recommended outfits with integrated maps and directions.</p>
+                        <button class="btn btn-secondary" id="featureExploreStoresBtn">Explore Stores</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Color Analysis Section -->
+    <section class="color-analysis" id="color-analysis">
+        <div class="container">
+            <div class="section-title">
+                <h2>Korean-Inspired Color Analysis</h2>
+                <p>Discover your perfect color palette with our system adapted for Indian skin tones</p>
+            </div>
+            <div class="color-content">
+                <div class="color-text">
+                    <h3 style="font-size: 28px; margin-bottom: 20px; color: var(--accent);">Find Your Color Season</h3>
+                    <p>Our system analyzes your skin tone, undertones, and features to determine which of the four color seasons you belong to:</p>
+                    
+                    <div class="color-palette">
+                        <div class="color-box" style="background: #92400e;">Deep Autumn</div>
+                        <div class="color-box" style="background: #047857;">True Spring</div>
+                        <div class="color-box" style="background: #1e40af;">Cool Summer</div>
+                        <div class="color-box" style="background: #7e22ce;">Deep Winter</div>
+                        <div class="color-box" style="background: #b45309;">Warm Autumn</div>
+                        <div class="color-box" style="background: #0d9488;">Light Spring</div>
+                        <div class="color-box" style="background: #4f46e5;">Soft Summer</div>
+                        <div class="color-box" style="background: #9333ea;">Bright Winter</div>
+                    </div>
+                    
+                    <p style="margin-top: 20px;">Each season has specific colors that enhance your natural features and make you look radiant. Our system is specially calibrated for the diverse skin tones found across India.</p>
+                    <button class="btn btn-primary" style="margin-top: 20px;" id="discoverColorsBtn">
+                        <i class="fas fa-palette"></i> Discover My Colors
+                    </button>
+                    <div id="colorAnalysisResult" style="display: none;"></div>
+                </div>
+                <div class="color-visual">
+                    <div class="season-card spring">
+                        <h3><i class="fas fa-seedling"></i> Spring Palette</h3>
+                        <p>Warm and bright colors that complement golden undertones. Perfect for fair to wheatish complexions.</p>
+                        <div class="color-palette" style="margin-top: 15px;">
+                            <div class="color-box" style="background: #fde68a; color: #333;">Cream</div>
+                            <div class="color-box" style="background: #f59e0b;">Gold</div>
+                            <div class="color-box" style="background: #34d399;">Mint</div>
+                            <div class="color-box" style="background: #f97316;">Coral</div>
+                        </div>
+                    </div>
+                    
+                    <div class="season-card autumn">
+                        <h3><i class="fas fa-leaf"></i> Autumn Palette</h3>
+                        <p>Earthy, rich colors for warm undertones. Ideal for wheatish to dusky complexions.</p>
+                        <div class="color-palette" style="margin-top: 15px;">
+                            <div class="color-box" style="background: #854d0e;">Brown</div>
+                            <div class="color-box" style="background: #b45309;">Rust</div>
+                            <div class="color-box" style="background: #a16207;">Mustard</div>
+                            <div class="color-box" style="background: #92400e;">Terracotta</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recommendation Dashboard (now primarily for dynamic content based on body analysis) -->
+    <section class="recommendations" id="recommendationDashboard">
+        <div class="container">
+            <div class="section-title">
+                <h2>Your Personalized Recommendations</h2>
+                <p id="recommendationIntroText">Upload an image in the Body Type Analysis section to get personalized recommendations.</p>
+            </div>
+
+            <!-- Body Type Analysis Section (moved here and enhanced) -->
+            <div class="section-title" style="margin-top: 60px;">
+                <h2 style="font-size: 32px;">Body Type Analysis (Mock)</h2>
+                <p>Upload a full-body image to get a mock analysis of your body type, skin tone, and age, along with personalized style advice.</p>
+            </div>
+            <div class="body-analysis-form">
+                <div class="form-group full-width">
+                    <label for="bodyImageUpload">Upload Your Image</label>
+                    <input type="file" id="bodyImageUpload" accept="image/*">
+                    <img id="imagePreview" src="#" alt="Image Preview" style="display: none;">
+                </div>
+                <!-- Fields for mock fetched data -->
+                <div class="form-group">
+                    <label for="detectedSkinTone">Detected Skin Tone</label>
+                    <input type="text" id="detectedSkinTone" readonly placeholder="e.g., Light Wheatish">
+                </div>
+                <div class="form-group">
+                    <label for="detectedBodyType">Detected Body Type</label>
+                    <input type="text" id="detectedBodyType" readonly placeholder="e.g., Hourglass">
+                </div>
+                <div class="form-group">
+                    <label for="detectedAge">Detected Age</label>
+                    <input type="text" id="detectedAge" readonly placeholder="e.g., 28">
+                </div>
+
+                <div class="form-actions">
+                    <button id="analyzeBodyBtn" class="btn btn-primary" style="padding: 15px 35px; font-size: 18px;">
+                        <i class="fas fa-camera"></i> Analyze Body Type
+                    </button>
+                </div>
+                <div id="bodyAnalysisResult" style="display: none;">
+                    <!-- Body analysis result and personalized style advice will be displayed here -->
+                </div>
+            </div>
+
+            <div class="recommendation-cards" id="recommendationCardsContainer">
+                <!-- This section is now less prominent as analysis results are in bodyAnalysisResult -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Store Locator Section -->
+    <section class="store-locator" id="store-locator">
+        <div class="container">
+            <div class="section-title">
+                <h2>Find Stores Near You</h2>
+                <p>Locate local shops that carry your recommended styles.</p>
+            </div>
+            <div class="map-container">
+                <img src="image.png" alt="Map of Store Location" class="map-image">
+            </div>
+
+            <form id="storeSearchForm" class="store-search-form">
+                <input type="text" id="storeSearchInput" placeholder="Enter city or area, e.g., Bangalore">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-search-location"></i> Search Stores
+                </button>
+            </form>
+
+            <div class="store-results" id="storeResultsContainer">
+                <!-- Mock store results will be displayed here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials">
+        <div class="container">
+            <div class="section-title">
+                <h2>What Our Users Say</h2>
+                <p>Real stories from people who transformed their style</p>
+            </div>
+            <div class="testimonial-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-text">
+                        <p>"As someone who always struggled with colors, the seasonal analysis was a game-changer. I finally understand which colors make me look radiant!"</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">P</div>
+                        <div class="author-info">
+                            <h4>Priya S.</h4>
+                            <p>Mumbai, 28</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-text">
+                        <p>"The local store feature helped me discover amazing boutiques in my area that I never knew existed. Saved me hours of searching!"</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">R</div>
+                        <div class="author-info">
+                            <h4>Rajesh K.</h4>
+                            <p>Delhi, 35</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-text">
+                        <p>"Monsoon season used to be a fashion nightmare. Now I get perfect recommendations for humid weather that actually keep me comfortable."</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">A</div>
+                        <div class="author-info">
+                            <h4>Ayesha M.</h4>
+                            <p>Chennai, 32</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>VastraSahayak</h3>
+                    <p style="color: #d1d5db; margin-bottom: 20px;">Your personal fashion assistant for the Indian market. Combining traditional aesthetics with modern technology.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-pinterest-p"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#home"><i class="fas fa-chevron-right"></i> Home</a></li>
+                        <li><a href="#features"><i class="fas fa-chevron-right"></i> Features</a></li>
+                        <li><a href="#color-analysis"><i class="fas fa-chevron-right"></i> Color Analysis</a></li>
+                        <li><a href="#store-locator"><i class="fas fa-chevron-right"></i> Store Locator</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Features</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Body Type Analysis</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Skin Tone Matching</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Weather-Based Suggestions</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Local Store Integration</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Festival Recommendations</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Contact Us</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-map-marker-alt"></i> Bangalore, India</a></li>
+                        <li><a href="#"><i class="fas fa-phone-alt"></i> +91 9876543210</a></li>
+                        <li><a href="#"><i class="fas fa-envelope"></i> help@vastrasahayak.com</a></li>
+                        <li><a href="#"><i class="fab fa-whatsapp"></i> WhatsApp Support</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 VastraSahayak. All rights reserved. | Personalized Fashion Assistant for India</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="closeLoginModal">&times;</span>
+            <h2>Log In</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginUsername">Username</label>
+                    <input type="text" id="loginUsername" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" name="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Log In</button>
+            </form>
+            <p class="modal-message">Don't have an account? <a id="switchToSignup">Sign Up</a></p>
+            <p class="modal-message" id="loginMessage" style="color: red;"></p>
+        </div>
+    </div>
+
+    <!-- Sign Up Modal -->
+    <div id="signupModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="closeSignupModal">&times;</span>
+            <h2>Sign Up</h2>
+            <form id="signupForm">
+                <div class="form-group">
+                    <label for="signupUsername">Username</label>
+                    <input type="text" id="signupUsername" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupPassword">Password</label>
+                    <input type="password" id="signupPassword" name="password" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Sign Up</button>
+            </form>
+            <p class="modal-message">Already have an account? <a id="switchToLogin">Log In</a></p>
+            <p class="modal-message" id="signupMessage" style="color: red;"></p>
+        </div>
+    </div>
+
+    <!-- Styling Tips Modal -->
+    <div id="stylingTipsModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="closeStylingTipsModal">&times;</span>
+            <h2 id="stylingTipsTitle">Styling Tips</h2>
+            <div id="stylingTipsContent" class="loading">Generating tips...</div>
+        </div>
+    </div>
+
+    <!-- Color Quiz Modal -->
+    <div id="colorQuizModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="closeColorQuizModal">&times;</span>
+            <h2 id="quizTitle">Discover Your Color Season</h2>
+            <div id="quizContainer">
+                <!-- Quiz steps will be dynamically loaded here -->
+                <div class="quiz-step active" data-step="1">
+                    <h3>1. Jewelry Test: Which metal looks best on you?</h3>
+                    <div class="quiz-options">
+                        <div class="quiz-option" data-value="cool">Silver/Platinum</div>
+                        <div class="quiz-option" data-value="warm">Gold</div>
+                        <div class="quiz-option" data-value="neutral">Both equally good</div>
+                    </div>
+                </div>
+
+                <div class="quiz-step" data-step="2">
+                    <h3>2. What is your natural hair color?</h3>
+                    <div class="quiz-options">
+                        <div class="quiz-option" data-value="cool">Ashy blonde, cool brown, black with blue undertones</div>
+                        <div class="quiz-option" data-value="warm">Golden blonde, auburn, warm brown, red</div>
+                        <div class="quiz-option" data-value="neutral">Mixed (e.g., dark brown with some red highlights)</div>
+                    </div>
+                </div>
+
+                <div class="quiz-step" data-step="3">
+                    <h3>3. What is your natural eye color?</h3>
+                    <div class="quiz-options">
+                        <div class="quiz-option" data-value="cool">Blue, grey, cool green, dark brown/black</div>
+                        <div class="quiz-option" data-value="warm">Hazel, warm green, golden brown, light brown</div>
+                        <div class="quiz-option" data-value="neutral">Can't tell, or changes with mood/lighting</div>
+                    </div>
+                </div>
+
+                <div class="quiz-step" data-step="4">
+                    <h3>4. How does your skin typically react to sun exposure?</h3>
+                    <div class="quiz-options">
+                        <div class="quiz-option" data-value="cool">Burns easily, rarely tans</div>
+                        <div class="quiz-option" data-value="warm">Tans easily, rarely burns</div>
+                        <div class="quiz-option" data-value="neutral">Sometimes burns, sometimes tans</div>
+                    </div>
+                </div>
+
+                <div class="quiz-step" data-step="5">
+                    <h3>5. Which colors make your skin look most vibrant and healthy?</h3>
+                    <div class="quiz-options">
+                        <div class="quiz-option" data-value="cool">Blues, emerald greens, cool pinks, true black, pure white</div>
+                        <div class="quiz-option" data-value="warm">Oranges, olive greens, warm browns, coral, ivory, golden yellow</div>
+                        <div class="quiz-option" data-value="neutral">Pastels, muted tones, or a wide range of colors</div>
+                    </div>
+                </div>
+            </div>
+            <div class="quiz-navigation">
+                <button class="btn btn-secondary" id="prevQuizBtn" style="display: none;">Previous</button>
+                <button class="btn btn-primary" id="nextQuizBtn">Next</button>
+                <button class="btn btn-primary" id="submitQuizBtn" style="display: none;">Submit</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // Simple animation for feature cards on scroll
+        document.addEventListener('DOMContentLoaded', function() {
+            const featureCards = document.querySelectorAll('.feature-card');
+            
+            featureCards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(20px)';
+                    card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    
+                    const observer = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                card.style.opacity = '1';
+                                card.style.transform = 'translateY(0)';
+                            }
+                        });
+                    }, { threshold: 0.1 });
+                    
+                    observer.observe(card);
+                }, index * 100);
+            });
+
+            // --- Functionality for User Profile and Recommendations ---
+
+            // Removed userProfileForm and related logic as per user request.
+            // const userProfileForm = document.getElementById('userProfileForm');
+            const recommendationDashboard = document.getElementById('recommendationDashboard');
+            const recommendationCardsContainer = document.getElementById('recommendationCardsContainer');
+            const recommendationIntroText = document.getElementById('recommendationIntroText');
+            
+            // The recommendationDashboard is now visible by default on page load.
+            // recommendationDashboard.style.display = 'block'; // Already block by default due to HTML structure
+
+            // Removed userProfileForm event listener as the form is removed.
+            // userProfileForm.addEventListener('submit', function(event) { ... });
+
+            /**
+             * Generates mock clothing recommendations based on user profile.
+             * This is a simplified rule-based system for demonstration.
+             * In a real application, this would involve a backend API call.
+             * @param {object} profile - User profile object.
+             * @returns {Array<object>} An array of recommendation objects.
+             */
+            function generateMockRecommendations(profile) {
+                const recs = [];
+                let baseImage = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200' rx='15'><rect width='300' height='200' rx='15' fill='";
+                let imageEnd = "'/><text x='50%' y='50%' font-family='Poppins, sans-serif' font-size='24' fill='%23fff' text-anchor='middle' dominant-baseline='middle'>Outfit</text></svg>";
+
+                // This function is now less relevant as the primary recommendation logic moves to body analysis.
+                // Keeping it for now in case it's used elsewhere or for future expansion.
+                // It currently relies on a `profile` object that would have come from the removed form.
+                // If this function is still intended to be used, the `profile` object needs to be constructed
+                // from the detected body analysis values or other sources.
+                
+                // Example: If we wanted to generate cards from body analysis, we'd pass the detected values here.
+                // For now, it will likely not be called directly since the user form is removed.
+
+                return recs; // Returns empty array as the form that populates profile is removed.
+            }
+
+            /**
+             * Displays the generated recommendations in the dashboard.
+             * @param {Array<object>} recommendations - Array of recommendation objects.
+             * @param {string} introText - The introductory text to display above the recommendations.
+             */
+            function displayRecommendations(recommendations, introText) {
+                recommendationCardsContainer.innerHTML = ''; // Clear previous recommendations
+                if (recommendations.length === 0) {
+                    // This text is now redundant as bodyAnalysisResult handles main display
+                    // recommendationIntroText.textContent = "No specific recommendations found. Try adjusting your preferences!";
+                    return;
+                }
+
+                // This text is now redundant as bodyAnalysisResult handles main display
+                // recommendationIntroText.textContent = introText;
+
+                recommendations.forEach(rec => {
+                    const recCard = document.createElement('div');
+                    recCard.classList.add('rec-card');
+
+                    recCard.innerHTML = `
+                        <div class="rec-image" style="background-image: url('${rec.image}');"></div>
+                        <div class="rec-content">
+                            <h3>${rec.title}</h3>
+                            <p>${rec.description}</p>
+                            <div class="color-match">
+                                <span>Match Score:</span>
+                                <div class="match-bar">
+                                    <div class="match-fill" style="width: ${rec.match || 80}%;"></div>
+                                </div>
+                                <span>${rec.match || 80}%</span>
+                            </div>
+                            <div class="rec-tags">
+                                ${rec.tags.map(tag => `<div class="tag">${tag}</div>`).join('')}
+                            </div>
+                            <div class="rec-actions">
+                                <button class="btn btn-primary get-styling-tips-btn" 
+                                    data-title="${rec.title}" 
+                                    data-description="${rec.description}" 
+                                    data-tags="${rec.tags.join(', ')}">
+                                    ✨ Get Styling Tips
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    recommendationCardsContainer.appendChild(recCard);
+                });
+
+                // Add event listeners for the new styling tips buttons
+                document.querySelectorAll('.get-styling-tips-btn').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const outfitDetails = {
+                            title: this.dataset.title,
+                            description: this.dataset.description,
+                            tags: this.dataset.tags
+                        };
+                        // Note: window.currentUserProfile might be empty now.
+                        // getStylingTips needs to be updated if it strictly relies on it.
+                        getStylingTips(outfitDetails);
+                    });
+                });
+            }
+
+            // --- Functionality for Body Type Analysis (Mock) ---
+            const bodyImageUpload = document.getElementById('bodyImageUpload');
+            const imagePreview = document.getElementById('imagePreview');
+            const analyzeBodyBtn = document.getElementById('analyzeBodyBtn');
+            const bodyAnalysisResult = document.getElementById('bodyAnalysisResult');
+            const detectedSkinToneInput = document.getElementById('detectedSkinTone');
+            const detectedBodyTypeInput = document.getElementById('detectedBodyType');
+            const detectedAgeInput = document.getElementById('detectedAge');
+
+
+            bodyImageUpload.addEventListener('change', function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        imagePreview.src = e.target.result;
+                        imagePreview.style.display = 'block';
+                        bodyAnalysisResult.style.display = 'none'; // Hide previous result
+                        // Clear previous detected values
+                        detectedSkinToneInput.value = '';
+                        detectedBodyTypeInput.value = '';
+                        detectedAgeInput.value = '';
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    imagePreview.style.display = 'none';
+                    imagePreview.src = '#';
+                    detectedSkinToneInput.value = '';
+                    detectedBodyTypeInput.value = '';
+                    detectedAgeInput.value = '';
+                }
+            });
+
+            analyzeBodyBtn.addEventListener('click', function() {
+                if (imagePreview.src && imagePreview.src !== '#') {
+                    // Simulate API call to a Python backend for body analysis
+                    // In a real application, you would send imagePreview.src (base64) or the file
+                    // to a Flask/Django backend endpoint, which would then process it with OpenCV/ML.
+
+                    // Mocking the analysis result
+                    const bodyTypes = ['Apple', 'Pear', 'Hourglass', 'Rectangle', 'Inverted Triangle'];
+                    const skinTones = ['Pale', 'Fair', 'Light Wheatish', 'Medium Wheatish', 'Dark Wheatish', 'Light Dusky', 'Medium Dusky', 'Dark Dusky', 'Dark'];
+                    const ages = Array.from({length: 50}, (_, i) => 18 + i); // Ages from 18 to 67
+
+                    const randomBodyType = bodyTypes[Math.floor(Math.random() * bodyTypes.length)];
+                    const randomSkinTone = skinTones[Math.floor(Math.random() * skinTones.length)];
+                    const randomAge = ages[Math.floor(Math.random() * ages.length)];
+
+                    // Populate the new input fields
+                    detectedSkinToneInput.value = randomSkinTone;
+                    detectedBodyTypeInput.value = randomBodyType;
+                    detectedAgeInput.value = randomAge;
+
+                    // Get personalized style advice based on detected attributes
+                    const personalizedAdvice = getPersonalizedStyleAdvice(randomSkinTone, randomBodyType);
+
+                    let resultHtml = `
+                        <p>Analysis Complete!</p>
+                        <p><strong>Detected Skin Tone:</strong> ${randomSkinTone}</p>
+                        <p><strong>Detected Body Type:</strong> ${randomBodyType}</p>
+                        <p><strong>Detected Age:</strong> ${randomAge}</p>
+                        <p><strong>Suitable Colors:</strong> ${personalizedAdvice.suitableColors.join(', ')}</p>
+                        <h3>Outfit Suggestions by Occasion:</h3>
+                        <ul>
+                    `;
+                    personalizedAdvice.occasionOutfits.forEach(outfit => {
+                        resultHtml += `
+                            <li>
+                                <strong>${outfit.occasion}:</strong> ${outfit.outfit}<br>
+                                <em>Fabric:</em> ${outfit.fabric}, <em>Styling:</em> ${outfit.styling}
+                            </li>
+                        `;
+                    });
+                    resultHtml += `</ul>`;
+
+                    bodyAnalysisResult.innerHTML = resultHtml;
+                    bodyAnalysisResult.style.display = 'block';
+
+                    // Update the recommendation intro text to reflect that analysis is done
+                    recommendationIntroText.textContent = "Your personalized style analysis is ready above!";
+
+                } else {
+                    bodyAnalysisResult.textContent = "Please upload an image first.";
+                    bodyAnalysisResult.style.display = 'block';
+                }
+            });
+
+            /**
+             * Generates personalized style advice (colors, outfits) based on detected attributes.
+             * This is a mock rule-based system.
+             * @param {string} skinTone - Detected skin tone.
+             * @param {string} bodyType - Detected body type.
+             * @returns {object} An object containing suitableColors (array) and occasionOutfits (array).
+             */
+            function getPersonalizedStyleAdvice(skinTone, bodyType) {
+                let suitableColors = [];
+                let occasionOutfits = [];
+
+                // Colors based on skin tone (simplified rules for mock)
+                if (skinTone.includes('Pale') || skinTone.includes('Fair')) {
+                    suitableColors = ['Pastel Blue', 'Soft Pink', 'Lavender', 'Light Gray', 'Emerald Green'];
+                } else if (skinTone.includes('Wheatish')) {
+                    suitableColors = ['Jewel Tones (Ruby, Sapphire)', 'Warm Red', 'Earthy Brown', 'Mustard Yellow', 'Forest Green'];
+                } else if (skinTone.includes('Dusky') || skinTone.includes('Dark')) {
+                    suitableColors = ['Vibrant Blue', 'Deep Purple', 'Fuchsia Pink', 'Gold', 'White', 'Maroon'];
+                }
+
+                // Outfits based on body type and a few common occasions (simplified rules for mock)
+                const commonOccasions = ['Casual Day Out', 'Office/Formal', 'Wedding/Festive', 'Party Evening'];
+
+                commonOccasions.forEach(occasion => {
+                    let outfit = '';
+                    let fabric = '';
+                    let styling = '';
+
+                    if (occasion === 'Casual Day Out') {
+                        if (bodyType === 'Apple') {
+                            outfit = 'A-line Kurta with Straight Pants';
+                            fabric = 'Cotton, Linen';
+                            styling = 'Comfortable, Flowy';
+                        } else if (bodyType === 'Pear') {
+                            outfit = 'Bright Tunic Top with Dark Leggings';
+                            fabric = 'Rayon, Cotton';
+                            styling = 'Balanced, Casual';
+                        } else if (bodyType === 'Hourglass') {
+                            outfit = 'Fitted Kurti with Jeans';
+                            fabric = 'Cotton, Denim';
+                            styling = 'Highlight Curves, Smart Casual';
+                        } else if (bodyType === 'Rectangle') {
+                            outfit = 'Peplum Top with Flared Skirt';
+                            fabric = 'Cotton, Georgette';
+                            styling = 'Add Volume, Playful';
+                        } else if (bodyType === 'Inverted Triangle') {
+                            outfit = 'V-neck Top with Wide-leg Palazzos';
+                            fabric = 'Cotton, Viscose';
+                            styling = 'Balance Shoulders, Relaxed';
+                        } else {
+                            outfit = 'Casual Top with Jeans';
+                            fabric = 'Cotton';
+                            styling = 'Relaxed';
+                        }
+                    } else if (occasion === 'Office/Formal') {
+                        if (bodyType === 'Apple') {
+                            outfit = 'Straight-cut Kurta with Cigarette Pants';
+                            fabric = 'Linen, Cotton Silk';
+                            styling = 'Structured, Professional';
+                        } else if (bodyType === 'Pear') {
+                            outfit = 'Long Kurta with Palazzo Pants';
+                            fabric = 'Cotton, Chiffon';
+                            styling = 'Elegant, Comfortable';
+                        } else if (bodyType === 'Hourglass') {
+                            outfit = 'Tailored Blazer with Pencil Skirt/Trousers';
+                            fabric = 'Crepe, Blended Fabrics';
+                            styling = 'Sharp, Professional';
+                        } else if (bodyType === 'Rectangle') {
+                            outfit = 'Layered Tunic with Slim Pants';
+                            fabric = 'Cotton, Blended Fabrics';
+                            styling = 'Defined Waist, Smart';
+                        } else if (bodyType === 'Inverted Triangle') {
+                            outfit = 'Dark Blouse with A-line Skirt';
+                            fabric = 'Cotton, Silk Blends';
+                            styling = 'Soft Shoulders, Formal';
+                        } else {
+                            outfit = 'Formal Shirt with Trousers';
+                            fabric = 'Cotton, Linen';
+                            styling = 'Professional';
+                        }
+                    } else if (occasion === 'Wedding/Festive') {
+                        if (bodyType === 'Apple') {
+                            outfit = 'Anarkali Suit with Empire Waist';
+                            fabric = 'Georgette, Chiffon';
+                            styling = 'Flowy, Elegant';
+                        } else if (bodyType === 'Pear') {
+                            outfit = 'Lehenga with Short, Embellished Blouse';
+                            fabric = 'Silk, Brocade';
+                            styling = 'Accentuate Top, Traditional';
+                        } else if (bodyType === 'Hourglass') {
+                            outfit = 'Well-draped Saree or Fitted Lehenga';
+                            fabric = 'Silk, Net, Velvet';
+                            styling = 'Glamorous, Highlight Curves';
+                        } else if (bodyType === 'Rectangle') {
+                            outfit = 'Embellished Gown with Defined Waist';
+                            fabric = 'Satin, Organza';
+                            styling = 'Add Shape, Festive';
+                        } else if (bodyType === 'Inverted Triangle') {
+                            outfit = 'Heavy Lehenga with Simple Blouse, V-Neck';
+                            fabric = 'Silk, Raw Silk';
+                            styling = 'Balance Shoulders, Grand';
+                        } else {
+                            outfit = 'Traditional Indian Outfit (Saree/Kurta Set)';
+                            fabric = 'Silk, Cotton';
+                            styling = 'Festive';
+                        }
+                    } else if (occasion === 'Party Evening') {
+                        if (bodyType === 'Apple') {
+                            outfit = 'Dark-colored Maxi Dress with Embellished Neckline';
+                            fabric = 'Crepe, Georgette';
+                            styling = 'Elongating, Chic';
+                        } else if (bodyType === 'Pear') {
+                            outfit = 'Off-shoulder Top with Flared Pants/Skirt';
+                            fabric = 'Satin, Velvet';
+                            styling = 'Draw Attention Up, Stylish';
+                        } else if (bodyType === 'Hourglass') {
+                            outfit = 'Bodycon Dress or Jumpsuit';
+                            fabric = 'Stretch Fabrics, Sequin';
+                            styling = 'Showcase Curves, Glamorous';
+                        } else if (bodyType === 'Rectangle') {
+                            outfit = 'Wrap Dress or Structured Jumpsuit';
+                            fabric = 'Silk, Blended Fabrics';
+                            styling = 'Create Waist, Modern';
+                        } else if (bodyType === 'Inverted Triangle') {
+                            outfit = 'Flowy Top with Slim-fit Trousers';
+                            fabric = 'Chiffon, Rayon';
+                            styling = 'Soften Shoulders, Trendy';
+                        } else {
+                            outfit = 'Stylish Dress or Jumpsuit';
+                            fabric = 'Polyester, Silk';
+                            styling = 'Chic';
+                        }
+                    }
+                    occasionOutfits.push({ occasion, outfit, fabric, styling });
+                });
+
+                return { suitableColors, occasionOutfits };
+            }
+
+
+            // --- Login/Sign Up Functionality (Mock using localStorage) ---
+
+            const loginModal = document.getElementById('loginModal');
+            const signupModal = document.getElementById('signupModal');
+            const loginBtn = document.getElementById('loginBtn');
+            const signupBtn = document.getElementById('signupBtn');
+            const closeLoginModal = document.getElementById('closeLoginModal');
+            const closeSignupModal = document.getElementById('closeSignupModal');
+            const switchToSignup = document.getElementById('switchToSignup');
+            const switchToLogin = document.getElementById('switchToLogin');
+            const loginForm = document.getElementById('loginForm');
+            const signupForm = document.getElementById('signupForm');
+            const loginMessage = document.getElementById('loginMessage');
+            const signupMessage = document.getElementById('signupMessage');
+            const authButtonsContainer = document.getElementById('authButtonsContainer');
+
+            // Open Login Modal
+            loginBtn.addEventListener('click', () => {
+                loginModal.style.display = 'flex';
+                loginMessage.textContent = ''; // Clear previous messages
+            });
+
+            // Open Sign Up Modal
+            signupBtn.addEventListener('click', () => {
+                signupModal.style.display = 'flex';
+                signupMessage.textContent = ''; // Clear previous messages
+            });
+
+            // Close Modals
+            closeLoginModal.addEventListener('click', () => {
+                loginModal.style.display = 'none';
+            });
+            closeSignupModal.addEventListener('click', () => {
+                signupModal.style.display = 'none';
+            });
+
+            // Close modal if user clicks outside of it
+            window.addEventListener('click', (event) => {
+                if (event.target == loginModal) {
+                    loginModal.style.display = 'none';
+                }
+                if (event.target == signupModal) {
+                    signupModal.style.display = 'none';
+                }
+                if (event.target == stylingTipsModal) { // Close styling tips modal too
+                    stylingTipsModal.style.display = 'none';
+                }
+                if (event.target == colorQuizModal) { // Close color quiz modal too
+                    colorQuizModal.style.display = 'none';
+                }
+            });
+
+            // Switch between login and signup forms
+            switchToSignup.addEventListener('click', () => {
+                loginModal.style.display = 'none';
+                signupModal.style.display = 'flex';
+                signupMessage.textContent = '';
+            });
+            switchToLogin.addEventListener('click', () => {
+                signupModal.style.display = 'none';
+                loginModal.style.display = 'flex';
+                loginMessage.textContent = '';
+            });
+
+            // Handle Sign Up Form Submission
+            signupForm.addEventListener('submit', (event) => {
+                event.preventDefault();
+                const username = document.getElementById('signupUsername').value;
+                const password = document.getElementById('signupPassword').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+
+                signupMessage.textContent = ''; // Clear previous messages
+
+                if (password !== confirmPassword) {
+                    signupMessage.textContent = 'Passwords do not match!';
+                    return;
+                }
+
+                // Mock: Store user in localStorage
+                let users = JSON.parse(localStorage.getItem('users')) || {};
+                if (users[username]) {
+                    signupMessage.textContent = 'Username already exists!';
+                } else {
+                    users[username] = password;
+                    localStorage.setItem('users', JSON.stringify(users));
+                    localStorage.setItem('loggedInUser', username); // Log in the user automatically after signup
+                    
+                    signupModal.style.display = 'none'; // Hide signup modal
+                    updateAuthButtons(username); // Update header to show logged-in state
+
+                    // Update the intro text for the recommendation dashboard
+                    recommendationIntroText.textContent = "Welcome! Upload an image in the Body Type Analysis section to get personalized recommendations.";
+                    
+                    // Optionally, clear the profile form if it was pre-filled
+                    // userProfileForm.reset(); // Removed as form is removed
+                    recommendationDashboard.scrollIntoView({ behavior: 'smooth' }); // Scroll to the combined section
+                }
+            });
+
+            // Handle Login Form Submission
+            loginForm.addEventListener('submit', (event) => {
+                event.preventDefault();
+                const username = document.getElementById('loginUsername').value;
+                const password = document.getElementById('loginPassword').value;
+
+                loginMessage.textContent = ''; // Clear previous messages
+
+                let users = JSON.parse(localStorage.getItem('users')) || {};
+                if (users[username] && users[username] === password) {
+                    localStorage.setItem('loggedInUser', username);
+                    loginModal.style.display = 'none';
+                    updateAuthButtons(username);
+                    loginMessage.textContent = ''; // Clear any lingering messages
+                } else {
+                    loginMessage.textContent = 'Invalid username or password.';
+                }
+            });
+
+            // Handle Logout
+            function handleLogout() {
+                localStorage.removeItem('loggedInUser');
+                updateAuthButtons(null);
+            }
+
+            // Update Auth Buttons in Header
+            function updateAuthButtons(username) {
+                authButtonsContainer.innerHTML = ''; // Clear existing buttons/info
+                if (username) {
+                    const userInfo = document.createElement('span');
+                    userInfo.classList.add('header-user-info');
+                    userInfo.textContent = `Welcome, ${username}!`;
+                    authButtonsContainer.appendChild(userInfo);
+
+                    const logoutBtn = document.createElement('button');
+                    logoutBtn.classList.add('btn', 'btn-secondary');
+                    logoutBtn.textContent = 'Log Out';
+                    logoutBtn.addEventListener('click', handleLogout);
+                    authButtonsContainer.appendChild(logoutBtn);
+                } else {
+                    const loginBtnElement = document.createElement('button');
+                    loginBtnElement.classList.add('btn', 'btn-secondary');
+                    loginBtnElement.id = 'loginBtn';
+                    loginBtnElement.textContent = 'Log In';
+                    loginBtnElement.addEventListener('click', () => {
+                        loginModal.style.display = 'flex';
+                        loginMessage.textContent = '';
+                    });
+                    authButtonsContainer.appendChild(loginBtnElement);
+
+                    const signupBtnElement = document.createElement('button');
+                    signupBtnElement.classList.add('btn', 'btn-primary');
+                    signupBtnElement.id = 'signupBtn';
+                    signupBtnElement.textContent = 'Sign Up';
+                    signupBtnImpl = signupBtnElement; // Store reference for initial load
+                    signupBtnElement.addEventListener('click', () => {
+                        signupModal.style.display = 'flex';
+                        signupMessage.textContent = '';
+                    });
+                    authButtonsContainer.appendChild(signupBtnElement);
+                }
+            }
+
+            // Initial check on page load
+            const currentUser = localStorage.getItem('loggedInUser');
+            updateAuthButtons(currentUser);
+
+            // --- Store Locator Functionality (Mock) ---
+            const storeSearchForm = document.getElementById('storeSearchForm');
+            const storeSearchInput = document.getElementById('storeSearchInput');
+            const storeResultsContainer = document.getElementById('storeResultsContainer');
+
+            const mockStores = [
+                { name: "Fashion Hub Boutique", address: "123 MG Road, Bangalore", categories: ["Traditional", "Casual"] },
+                { name: "Style Zone", address: "45 Commercial Street, Bangalore", categories: ["Modern", "Formal"] },
+                { name: "Ethnic Elegance", address: "78 Residency Road, Bangalore", categories: ["Traditional", "Festive"] },
+                { name: "Urban Threads", address: "10 Brigade Road, Bangalore", categories: ["Casual", "Sporty"] },
+                { name: "Designer Wear House", address: "5 Indiranagar, Bangalore", categories: ["Party", "Glamorous"] },
+                { name: "The Saree Emporium", address: "20 Jayanagar, Bangalore", categories: ["Traditional", "Silk"] },
+                { name: "Active Life Sports", address: "30 Koramangala, Bangalore", categories: ["Sporty", "Gym"] },
+                { name: "Myntra Experience Store", address: "Phoenix Marketcity, Bangalore", categories: ["All"] },
+                { name: "Zara", address: "Orion Mall, Bangalore", categories: ["Modern", "Casual"] },
+                { name: "H&M", address: "Garuda Mall, Bangalore", categories: ["Modern", "Casual"] },
+                // New stores in Gujarat
+                { name: "Gujarat Garments", address: "101 Ring Road, Surat, Gujarat", categories: ["Traditional", "Casual", "Ethnic"] },
+                { name: "Ahmedabad Apparel", address: "20 Ashram Road, Ahmedabad, Gujarat", categories: ["Formal", "Modern"] },
+                { name: "Vadodara Vogue", address: "5 Sayajigunj, Vadodara, Gujarat", categories: ["Festive", "Designer"] },
+                { name: "Rajkot Retail", address: "15 Kalawad Road, Rajkot, Gujarat", categories: ["Casual", "Sporty"] },
+                { name: "Surat Sarees & More", address: "50 Ghod Dod Road, Surat, Gujarat", categories: ["Traditional", "Silk", "Festive"] }
+            ];
+
+            storeSearchForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+                const searchTerm = storeSearchInput.value.toLowerCase();
+                displayMockStores(searchTerm);
+            });
+
+            function displayMockStores(searchTerm = '') {
+                storeResultsContainer.innerHTML = ''; // Clear previous results
+
+                const filteredStores = mockStores.filter(store => 
+                    store.name.toLowerCase().includes(searchTerm) || 
+                    store.address.toLowerCase().includes(searchTerm) ||
+                    store.categories.some(cat => cat.toLowerCase().includes(searchTerm))
+                );
+
+                if (filteredStores.length === 0) {
+                    storeResultsContainer.innerHTML = '<p style="text-align: center; color: #666;">No stores found matching your search. Try a different city or category!</p>';
+                    return;
+                }
+
+                filteredStores.forEach(store => {
+                    const storeCard = document.createElement('div');
+                    storeCard.classList.add('store-card');
+                    storeCard.innerHTML = `
+                        <div>
+                            <h3>${store.name}</h3>
+                            <p>${store.address}</p>
+                            <p style="font-size: 12px; color: #999;">Categories: ${store.categories.join(', ')}</p>
+                        </div>
+                        <a href="https://www.google.com/maps/search/${encodeURIComponent(store.address)}" target="_blank" class="btn btn-secondary">
+                            <i class="fas fa-directions"></i> Directions
+                        </a>
+                    `;
+                    storeResultsContainer.appendChild(storeCard);
+                });
+            }
+
+            // Display all mock stores initially
+            displayMockStores();
+
+            // --- Other Button Functionality ---
+
+            // Feature Card Buttons
+            document.getElementById('featureBodyAnalysisBtn').addEventListener('click', () => {
+                document.getElementById('recommendationDashboard').scrollIntoView({ behavior: 'smooth' }); // Scroll to the enhanced body analysis section
+            });
+
+            document.getElementById('featureColorAnalysisBtn').addEventListener('click', () => {
+                document.getElementById('color-analysis').scrollIntoView({ behavior: 'smooth' });
+            });
+
+            // Weather-Adaptive "See Demo" button functionality
+            document.getElementById('featureWeatherDemoBtn').addEventListener('click', () => {
+                const weatherDemos = [
+                    {
+                        weather: 'hot',
+                        title: 'Summer Essentials for Hot Weather',
+                        description: 'Lightweight and breathable outfits for scorching days.',
+                        recs: [
+                            { title: 'Cotton Kurti & Leggings', description: 'Perfect for daily wear in heat.', image: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200' rx='15'><rect width='300' height='200' rx='15' fill='%23fef3c7'/><text x='50%' y='50%' font-family='Poppins, sans-serif' font-size='24' fill='%23333' text-anchor='middle' dominant-baseline='middle'>Summer Kurti</text></svg>", tags: ['Casual', 'Cotton', 'Light'], match: 90 },
+                            { title: 'Linen Shirt & Shorts', description: 'Cool and casual for outdoor activities.', image: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200' rx='15'><rect width='300' height='200' rx='15' fill='%23a7f3d0'/><text x='50%' y='50%' font-family='Poppins, sans-serif' font-size='24' fill='%23333' text-anchor='middle' dominant-baseline='middle'>Linen Casual</text></svg>", tags: ['Casual', 'Linen', 'Breathable'], match: 85 }
+                        ]
+                    },
+                    {
+                        weather: 'cold',
+                        title: 'Cozy Outfits for Cold Weather',
+                        description: 'Stay warm and stylish when temperatures drop.',
+                        recs: [
+                            { title: 'Woolen Shawl & Anarkali', description: 'Elegant warmth for winter events.', image: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200' rx='15'><rect width='300' height='200' rx='15' fill='%23d1d5db'/><text x='50%' y='50%' font-family='Poppins, sans-serif' font-size='24' fill='%23333' text-anchor='middle' dominant-baseline='middle'>Winter Ethnic</text></svg>", tags: ['Traditional', 'Wool', 'Warm'], match: 92 },
+                            { title: 'Padded Jacket & Jeans', description: 'Modern and practical for cold days.', image: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200' rx='15'><rect width='300' height='200' rx='15' fill='%236b7280'/><text x='50%' y='50%' font-family='Poppins, sans-serif' font-size='24' fill='%23fff' text-anchor='middle' dominant-baseline='middle'>Winter Casual</text></svg>", tags: ['Modern', 'Layering', 'Warm'], match: 88 }
+                        ]
+                    },
+                    {
+                        weather: 'rainy',
+                        title: 'Monsoon Ready Styles',
+                        description: 'Fashionable and functional for humid and wet conditions.',
+                        recs: [
+                            { title: 'Quick-Dry Synthetic Kurta', description: 'Avoid dampness with quick-drying fabrics.', image: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200' rx='15'><rect width='300' height='200' rx='15' fill='%23bfdbfe'/><text x='50%' y='50%' font-family='Poppins, sans-serif' font-size='24' fill='%23333' text-anchor='middle' dominant-baseline='middle'>Monsoon Kurta</text></svg>", tags: ['Monsoon', 'Synthetic', 'Practical'], match: 87 },
+                            { title: 'Water-Resistant Trench Coat', description: 'Stay chic and dry in the rain.', image: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200' rx='15'><rect width='300' height='200' rx='15' fill='%239ca3af'/><text x='50%' y='50%' font-family='Poppins, sans-serif' font-size='24' fill='%23fff' text-anchor='middle' dominant-baseline='middle'>Rain Coat</text></svg>", tags: ['Outerwear', 'Waterproof', 'Stylish'], match: 89 }
+                        ]
+                    }
+                ];
+
+                const randomDemo = weatherDemos[Math.floor(Math.random() * weatherDemos.length)];
+                displayRecommendations(randomDemo.recs, `Weather-Adaptive Demo: ${randomDemo.title}`);
+                recommendationCardsContainer.scrollIntoView({ behavior: 'smooth' }); // Scroll to the recommendation cards
+            });
+
+
+            document.getElementById('featureExploreStoresBtn').addEventListener('click', () => {
+                document.getElementById('store-locator').scrollIntoView({ behavior: 'smooth' });
+            });
+
+            // --- Color Quiz Functionality ---
+            const discoverColorsBtn = document.getElementById('discoverColorsBtn');
+            const colorAnalysisResultDiv = document.getElementById('colorAnalysisResult');
+            const colorQuizModal = document.getElementById('colorQuizModal');
+            const closeColorQuizModal = document.getElementById('closeColorQuizModal');
+            const quizSteps = document.querySelectorAll('.quiz-step');
+            const prevQuizBtn = document.getElementById('prevQuizBtn');
+            const nextQuizBtn = document.getElementById('nextQuizBtn');
+            const submitQuizBtn = document.getElementById('submitQuizBtn');
+
+            let currentQuizStep = 0;
+            let quizAnswers = {}; // To store answers for each question
+
+            discoverColorsBtn.addEventListener('click', () => {
+                colorQuizModal.style.display = 'flex';
+                currentQuizStep = 0; // Reset quiz to first step
+                quizAnswers = {}; // Clear previous answers
+                showQuizStep(currentQuizStep);
+                colorAnalysisResultDiv.style.display = 'none'; // Hide previous result
+            });
+
+            closeColorQuizModal.addEventListener('click', () => {
+                colorQuizModal.style.display = 'none';
+            });
+
+            function showQuizStep(stepIndex) {
+                quizSteps.forEach((step, index) => {
+                    step.classList.remove('active');
+                    if (index === stepIndex) {
+                        step.classList.add('active');
+                    }
+                });
+
+                // Update navigation buttons visibility
+                prevQuizBtn.style.display = stepIndex === 0 ? 'none' : 'block';
+                nextQuizBtn.style.display = stepIndex === quizSteps.length - 1 ? 'none' : 'block';
+                submitQuizBtn.style.display = stepIndex === quizSteps.length - 1 ? 'block' : 'none';
+
+                // Restore selected option for current step
+                const currentStepElement = quizSteps[stepIndex];
+                const options = currentStepElement.querySelectorAll('.quiz-option');
+                options.forEach(option => {
+                    option.classList.remove('selected');
+                    const questionKey = currentStepElement.dataset.step;
+                    if (quizAnswers[questionKey] === option.dataset.value) {
+                        option.classList.add('selected');
+                    }
+                });
+            }
+
+            quizSteps.forEach(step => {
+                const options = step.querySelectorAll('.quiz-option');
+                options.forEach(option => {
+                    option.addEventListener('click', () => {
+                        // Deselect other options in the same step
+                        options.forEach(opt => opt.classList.remove('selected'));
+                        // Select the clicked option
+                        option.classList.add('selected');
+                        // Store the answer
+                        quizAnswers[step.dataset.step] = option.dataset.value;
+                    });
+                });
+            });
+
+            nextQuizBtn.addEventListener('click', () => {
+                // Validate if an option is selected for the current step before moving next
+                const currentStepElement = quizSteps[currentQuizStep];
+                const selectedOption = currentStepElement.querySelector('.quiz-option.selected');
+                if (!selectedOption) {
+                    // Using a simple alert for now, consider a custom modal for better UX
+                    alert('Please select an option to continue!'); 
+                    return;
+                }
+                currentQuizStep++;
+                showQuizStep(currentQuizStep);
+            });
+
+            prevQuizBtn.addEventListener('click', () => {
+                currentQuizStep--;
+                showQuizStep(currentQuizStep);
+            });
+
+            submitQuizBtn.addEventListener('click', () => {
+                // Validate last question
+                const currentStepElement = quizSteps[currentQuizStep];
+                const selectedOption = currentStepElement.querySelector('.quiz-option.selected');
+                if (!selectedOption) {
+                    // Using a simple alert for now, consider a custom modal for better UX
+                    alert('Please select an option to submit!'); 
+                    return;
+                }
+                
+                const season = determineColorSeason(quizAnswers);
+                colorAnalysisResultDiv.textContent = `Based on your answers, your color season is likely: ${season}!`;
+                colorAnalysisResultDiv.style.display = 'block';
+                colorQuizModal.style.display = 'none'; // Close the quiz modal
+            });
+
+            function determineColorSeason(answers) {
+                let warmCount = 0;
+                let coolCount = 0;
+                let neutralCount = 0;
+
+                for (const key in answers) {
+                    if (answers[key] === 'warm') {
+                        warmCount++;
+                    } else if (answers[key] === 'cool') {
+                        coolCount++;
+                    } else if (answers[key] === 'neutral') {
+                        neutralCount++;
+                    }
+                }
+
+                // Simple logic: More warm answers -> Spring/Autumn. More cool answers -> Summer/Winter.
+                // Further refine based on specific questions (e.g., hair/eye depth)
+                if (warmCount > coolCount) {
+                    // Could be Spring or Autumn
+                    // If hair/eye are lighter/brighter, lean Spring. If deeper/richer, lean Autumn.
+                    // For simplicity, let's just pick one or add a very basic rule
+                    if (answers['2'] === 'golden' || answers['3'] === 'light brown') { // Hair or eye suggests lighter warm
+                        return 'Spring';
+                    }
+                    return 'Autumn';
+                } else if (coolCount > warmCount) {
+                    // Could be Summer or Winter
+                    // If hair/eye are softer/muted, lean Summer. If high contrast/dark, lean Winter.
+                    // For simplicity, let's just pick one or add a very basic rule
+                    if (answers['2'] === 'ashy' || answers['3'] === 'blue') { // Hair or eye suggests softer cool
+                        return 'Summer';
+                    }
+                    return 'Winter';
+                } else {
+                    // Neutral or balanced counts - could be soft seasons or a blend
+                    // This is a very simplistic fallback. Real analysis is more complex.
+                    return 'Neutral/Balanced (e.g., Soft Summer or Soft Autumn)';
+                }
+            }
+
+
+            // --- Gemini API Integration for Styling Tips ---
+            const stylingTipsModal = document.getElementById('stylingTipsModal');
+            const closeStylingTipsModal = document.getElementById('closeStylingTipsModal');
+            const stylingTipsTitle = document.getElementById('stylingTipsTitle');
+            const stylingTipsContent = document.getElementById('stylingTipsContent');
+
+            closeStylingTipsModal.addEventListener('click', () => {
+                stylingTipsModal.style.display = 'none';
+            });
+
+            /**
+             * Calls the Gemini API to get styling tips for an outfit.
+             * @param {object} outfitDetails - Object containing title, description, and tags of the outfit.
+             */
+            async function getStylingTips(outfitDetails) {
+                stylingTipsModal.style.display = 'flex';
+                stylingTipsTitle.textContent = `Styling Tips for ${outfitDetails.title}`;
+                stylingTipsContent.textContent = 'Generating tips...';
+                stylingTipsContent.classList.add('loading');
+
+                // Note: window.currentUserProfile is no longer set by the removed form.
+                // If styling tips need user profile info, it would need to come from
+                // the detected body analysis or be explicitly passed.
+                const userProfile = {
+                    skinTone: detectedSkinToneInput.value,
+                    bodyType: detectedBodyTypeInput.value,
+                    age: detectedAgeInput.value
+                    // Add other relevant detected info here if needed by the prompt
+                }; 
+
+                let prompt = `Generate concise styling tips for an outfit.
+Outfit: ${outfitDetails.title}
+Description: ${outfitDetails.description}
+Tags: ${outfitDetails.tags}`;
+
+                if (userProfile.bodyType) prompt += `\nConsider body type: ${userProfile.bodyType}.`;
+                if (userProfile.skinTone) prompt += `\nConsider skin tone: ${userProfile.skinTone}.`;
+                // if (userProfile.preferredColor) prompt += `\nConsider preferred color: ${userProfile.preferredColor}.`; // Removed this as preferredColor is no longer explicitly set
+                // if (userProfile.activityType) prompt += `\nConsider activity type: ${userProfile.activityType}.`; // Removed this as activityType is no longer explicitly set
+                // if (userProfile.weatherCondition) prompt += `\nConsider weather condition: ${userProfile.weatherCondition}.`; // Removed this as weatherCondition is no longer explicitly set
+
+                prompt += `\n\nFocus on: How to wear it, suitable accessories, and appropriate occasions. Keep it under 100 words.`;
+
+                let chatHistory = [];
+                chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+                const payload = { contents: chatHistory };
+                const apiKey = ""; // Leave as-is, Canvas will provide it
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+                let retryCount = 0;
+                const maxRetries = 3;
+                const initialDelay = 1000; // 1 second
+
+                while (retryCount < maxRetries) {
+                    try {
+                        const response = await fetch(apiUrl, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
+
+                        if (!response.ok) {
+                            if (response.status === 429 && retryCount < maxRetries - 1) {
+                                const delay = initialDelay * Math.pow(2, retryCount);
+                                console.warn(`Rate limit hit. Retrying in ${delay / 1000}s...`);
+                                await new Promise(res => setTimeout(res, delay));
+                                retryCount++;
+                                continue;
+                            } else {
+                                throw new Error(`HTTP error! status: ${response.status}`);
+                            }
+                        }
+
+                        const result = await response.json();
+                        if (result.candidates && result.candidates.length > 0 &&
+                            result.candidates[0].content && result.candidates[0].content.parts &&
+                            result.candidates[0].content.parts.length > 0) {
+                            const text = result.candidates[0].content.parts[0].text;
+                            stylingTipsContent.textContent = text;
+                            stylingTipsContent.classList.remove('loading');
+                        } else {
+                            stylingTipsContent.textContent = 'Could not generate styling tips. Please try again.';
+                            stylingTipsContent.classList.remove('loading');
+                            console.error('Unexpected API response structure:', result);
+                        }
+                        return; // Exit loop on success
+                    } catch (error) {
+                        console.error('Error fetching styling tips:', error);
+                        stylingTipsContent.textContent = 'Failed to generate tips. Please check your network and try again.';
+                        stylingTipsContent.classList.remove('loading');
+                        return; // Exit loop on error
+                    }
+                }
+                stylingTipsContent.textContent = 'Failed to generate tips after multiple retries. Please try again later.';
+                stylingTipsContent.classList.remove('loading');
+            }
+        });
+    </script>
+</body>
+</html>
